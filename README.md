@@ -1,20 +1,92 @@
 # Fractal AI Workshop EA Starter
 
-Everything you need to run a Claude Code Executive Assistant + a 2-3 agent VPS team.
+Your Claude Code Executive Assistant. Talks to your n8n, your Notion, and your AI agent VPS.
 
-Built during the **Fractal AI Workshop** with [Matty Reed](https://www.linkedin.com/in/mattyreed1).
+Built for the **Fractal AI Workshop** with [Matty Reed](https://www.linkedin.com/in/mattyreed1).
+
+---
+
+## Setup — 1 message, all in Claude Code
+
+You don't need a terminal. Just open Claude Code and paste this:
+
+> *Set me up for the Fractal AI Workshop. The repo is at github.com/Mattyreed1/fractal-ai-workshop-ea-starter. Clone it and walk me through the setup.*
+
+Claude Code will:
+
+1. Clone this repo to `~/fractal-ai-workshop-ea-starter`
+2. Install 3 skills into `~/.claude/skills/`
+3. Ask you for your **n8n URL + API key** (walks you through where to find them)
+4. Ask you for your **Notion integration token** (walks you through creating one)
+5. Wire both MCP servers
+6. Create your personalized `CLAUDE.md`
+7. Tell you to quit + reopen Claude Code
+
+Total: ~15 minutes. No terminal commands.
+
+After restart, paste:
+
+> *Check my setup*
+
+Confirms everything is wired.
+
+---
 
 ## What's inside
 
 | Skill | What it does |
 |-------|--------------|
-| **`openclaw-vps-setup`** | Provisions a Hetzner VPS, installs OpenClaw in Docker, sets up the 4-Layer Agent Architecture (DNA + SOUL + AGENTS + TEAM) + shared memory layer (MEMORY + KNOWLEDGE), deploys agents into Discord channels |
+| **`n8n`** | Master skill + 8 sub-skills covering nodes, expressions, code, validation, and template publishing. Lets your CC build n8n workflows by talking. |
+| **`notion`** | Read/write Notion pages and databases. Search, query, create, update, append. |
+| **`openclaw-vps-setup`** | Provisions a Hetzner VPS, installs OpenClaw in Docker, sets up the 4-Layer Agent Architecture, deploys agents into Discord channels. The take-home from Workshop Build #2. |
+| **`claude-code-setup`** | The setup wizard above — walks Claude Code through installing the other skills + wiring the MCP servers. |
 
-More skills coming as the workshop expands.
+---
 
-## Install (3 commands)
+## What you'll need
 
-Requires: macOS or Linux, Claude Code already installed.
+- **Claude Code Desktop** ([download](https://claude.ai/code))
+- **Node.js** ([download](https://nodejs.org)) — required for the MCP servers
+- **n8n account** — Cloud or self-hosted ([free signup](https://n8n.partnerlinks.io/6w47oeg6f6v0))
+- **Notion account** ([signup](https://notion.so/signup))
+
+For the **Workshop Build #2** (post-workshop):
+- A Hetzner Cloud account (the `openclaw-vps-setup` skill walks you through provisioning)
+
+---
+
+## How to use it after setup
+
+```
+You: build an n8n workflow that takes incoming RFIs from a webhook and posts a summary to my Notion project DB
+Claude Code: [reads the n8n + notion skills, designs the workflow, builds it via MCP, tests, confirms]
+```
+
+```
+You: set up my VPS and onboard an RFI triage agent
+Claude Code: [reads openclaw-vps-setup skill, walks through provisioning, installs OpenClaw, deploys the agent]
+```
+
+```
+You: save today's meeting notes to my Notion in the project page for Acme
+Claude Code: [searches Notion, finds the page, appends formatted notes]
+```
+
+---
+
+## The 90-day plan
+
+After the workshop, see [`docs/90-day-plan.md`](docs/90-day-plan.md):
+
+- **Week 1:** One real task automated, your VPS running, one agent online
+- **Month 1:** 2-3 more agents onboarded, shared memory layer in regular use
+- **Quarter 1:** Walk into your next role with a working agent team
+
+---
+
+## Already a power user?
+
+If you prefer terminal:
 
 ```bash
 git clone https://github.com/Mattyreed1/fractal-ai-workshop-ea-starter.git ~/fractal-ai-workshop-ea-starter
@@ -22,40 +94,11 @@ cd ~/fractal-ai-workshop-ea-starter
 bash install.sh
 ```
 
-This symlinks each skill into `~/.claude/skills/`. Restart Claude Code to load them.
+Then wire the MCP servers manually per `claude-skills/claude-code-setup/SKILL.md` Steps 4-5, and restart Claude Code.
 
-**Verify:** in a fresh CC session, ask: *"do I have a skill for setting up an openclaw VPS?"* — CC should recommend `openclaw-vps-setup`.
+The Claude Code wizard path above handles all of this automatically.
 
-## What you'll need beyond this repo
-
-- Hetzner Cloud account (CX22 VPS, ~€5/mo)
-- Discord account + a server you own
-- An LLM API key (Anthropic recommended)
-- ~2 hours for first-time setup
-
-Detailed walkthrough: [`docs/install.md`](docs/install.md)
-
-## How to use it
-
-```
-You: "set up my VPS and onboard an RFI triage agent"
-Claude Code: [walks through the openclaw-vps-setup skill, step by step]
-```
-
-Adding more agents later:
-
-```
-You: "onboard a new agent for client comms"
-Claude Code: [runs the 7-step onboarding playbook]
-```
-
-## The 90-day plan
-
-Don't try to do everything at once. See [`docs/90-day-plan.md`](docs/90-day-plan.md):
-
-- **Week 1:** One VPS running, one agent in Discord, one real task automated
-- **Month 1:** 2-3 more agents onboarded, shared memory layer in regular use
-- **Quarter 1:** Walk into your next role with a working agent team
+---
 
 ## License
 
