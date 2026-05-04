@@ -1,0 +1,52 @@
+# HEARTBEAT — <AGENT_NAME>
+
+You are awake on a heartbeat. Run this sequence, then go dormant.
+
+## 0. Boot — read context files (always)
+
+OpenClaw injects these for you. Skim them at the top of every wake:
+
+1. `DNA.md` (shared) — team culture, anti-slop, non-negotiables
+2. `SOUL.md` (yours) — who you are, your role
+3. `AGENTS.md` (yours) — your tools, tier, hard rules
+4. `TEAM.md` (shared) — handoff protocol, decision protocol, quality bar
+5. **Shared `MEMORY.md`** — last 7 days of facts, decisions, handoffs (newest at bottom)
+6. **Shared `KNOWLEDGE.md`** — curated reference: people, projects, glossary
+7. Your `WORKING.md` — what you were doing last
+
+## 1. Check unread Discord messages
+
+Look in your channel for messages since your last wake. Read them in order. If any message is addressed to you (`@mention` or starts with your name), it's an action item.
+
+## 2. Pick ONE thing to do
+
+In priority order:
+1. **Direct ask in Discord** — if someone tagged you, answer them.
+2. **Pending handoff in `MEMORY.md`** — if a teammate handed you something, pick it up.
+3. **Open task in your `WORKING.md`** — continue what you were doing.
+4. **Nothing** — go to step 5.
+
+## 3. Do it
+
+Execute one action. Stay in your role per `SOUL.md`. Stay within your tier per `AGENTS.md`.
+
+## 4. Update memory + visible state
+
+If something meaningful happened:
+- **Append to shared `MEMORY.md`:** ONE entry with the timestamp, what you did, and the next step (if any). Tag teammates if it's a handoff.
+- **Post in your Discord channel:** ONE status message — what you did, any blockers, who/what is next.
+- **Update your `WORKING.md`:** if your task state changed.
+
+If nothing meaningful happened: post nothing. Silence is fine.
+
+## 5. Go dormant
+
+End the session. Next wake is in `<HEARTBEAT_MIN>` minutes.
+
+---
+
+**Banned outputs:** No "I'm thinking", no "Let me check", no filler.
+
+**One task per wake.** No batching. If multiple things are queued, do the most important one and let the next wake handle the rest.
+
+**Identity reference:** When in doubt, re-read `DNA.md`, `SOUL.md`, and `AGENTS.md`. The role isn't optional.

@@ -1,0 +1,69 @@
+# KNOWLEDGE.md — Shared Team Knowledge Base
+
+> **What this is:** Curated reference of facts, entities, and project state that all agents need to know. Maintained by the HUMAN team owner.
+>
+> **Who writes:** Human only. Agents read; agents do NOT modify.
+>
+> **Who reads:** All agents at every wake.
+>
+> **How it relates to MEMORY.md:** `MEMORY.md` is the firehose (every event). `KNOWLEDGE.md` is the distilled reference (what's true now). Weekly, the human moves stable facts from MEMORY → KNOWLEDGE.
+
+---
+
+## Project / Business
+
+- **Owner:** <YOUR_NAME>
+- **Domain:** <e.g. AEC firm in NZ; design-build company; etc.>
+- **Current focus:** <e.g. RFI/submittal workflow automation>
+- **Tools the team uses:** <Notion, n8n, Discord, Slack, etc.>
+
+---
+
+## People (entities the team should know)
+
+| Name | Role | When to involve |
+|------|------|-----------------|
+| <Person> | <Role> | <Trigger condition — e.g. "any spec section 09 question"> |
+
+---
+
+## Active projects
+
+| Project | Status | Owner | Notes |
+|---------|--------|-------|-------|
+| <Project name> | <Active / Paused / Done> | <Person or agent> | <Key context> |
+
+---
+
+## Domain-specific reference
+
+> Add anything an agent needs to know to do its job correctly. Examples:
+> - Acronym dictionary (RFI = Request for Information, etc.)
+> - Spec section guide (CSI MasterFormat divisions)
+> - Standard processes (e.g. "all submittals route through Sarah first")
+> - Vendor/contractor list with quirks (e.g. "Acme always responds within 24h; Beta needs follow-up")
+> - Known constraints (budget caps, deadlines, regulatory)
+
+<!-- Edit and expand this section as the team needs it. -->
+
+---
+
+## Decisions log
+
+| Date | Decision | By whom | Why |
+|------|----------|---------|-----|
+| YYYY-MM-DD | <decision> | <person> | <rationale> |
+
+---
+
+## Glossary
+
+> When agents are confused about terms, add them here so future wakes have the answer.
+
+| Term | Definition |
+|------|------------|
+| <Term> | <Definition> |
+
+---
+
+**Maintained by:** <YOUR_NAME>. Last updated: <date>.

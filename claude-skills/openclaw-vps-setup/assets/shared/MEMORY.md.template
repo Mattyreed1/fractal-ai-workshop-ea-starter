@@ -1,0 +1,42 @@
+# MEMORY.md — Shared Team Memory
+
+> **What this is:** Append-only log of facts, decisions, and handoffs that any agent on the team might need.
+>
+> **Who writes:** All agents (append only — never delete or rewrite past entries).
+>
+> **Who reads:** All agents at every wake (last 7 days minimum).
+>
+> **Format:** One entry per event. Newest entries at the BOTTOM of the file.
+
+---
+
+## Entry format
+
+```
+## YYYY-MM-DD HH:MM — [from <agent_name>] <one-line summary>
+- <bullet of context, decision, or handoff detail>
+- <link or file path if applicable>
+- Next: <what should happen next, if anything>
+```
+
+---
+
+## Pruning policy
+
+The HUMAN team owner consolidates entries weekly:
+- Entries older than 7 days that are still relevant → moved to `KNOWLEDGE.md` (the curated reference)
+- Entries older than 7 days that are obsolete → deleted from this file (kept in git history)
+- Recent entries (< 7 days) → stay here
+
+Agents NEVER prune. Append-only.
+
+---
+
+## Entries
+
+<!-- Append below this line. Newest at the bottom. -->
+
+## 2026-XX-XX HH:MM — [from human] Team initialized
+- This file was created when the OpenClaw VPS was set up via the `openclaw-vps-setup` skill.
+- All agents should read this file at every wake.
+- First handoff coming once agents are configured.

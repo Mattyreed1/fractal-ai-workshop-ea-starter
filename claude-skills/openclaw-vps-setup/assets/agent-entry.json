@@ -1,0 +1,20 @@
+{
+  "_paste_this_into_openclaw_json_under_agents": "Replace placeholders. Each new agent needs its own bot token + channel. The token name in bot_token_env must also be added to ~/openclaw/.env on the VPS.",
+
+  "<AGENT_NAME>": {
+    "model": {
+      "primary": "anthropic/claude-sonnet-4.7"
+    },
+    "heartbeat": {
+      "every": "<HEARTBEAT_MIN>m"
+    },
+    "skills": [],
+    "mcp_servers": [],
+    "channels": {
+      "discord": {
+        "bot_token_env": "<DISCORD_TOKEN_VAR>",
+        "default_channel_id": "<CHANNEL_ID>"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "_comment_about_this_file": "Template openclaw.json for a fresh OpenClaw deployment. Replace <PLACEHOLDERS>, push to ~/.openclaw/openclaw.json on the VPS, restart gateway. Verify schema against your installed OpenClaw version before pushing — schema can change between releases.",
+
+  "gateway": {
+    "bind": "loopback",
+    "port": 18789
+  },
+
+  "defaults": {
+    "model": {
+      "primary": "anthropic/claude-sonnet-4.7"
+    },
+    "heartbeat": {
+      "every": "60m"
+    },
+    "compaction": {
+      "mode": "safeguard"
+    }
+  },
+
+  "env": {
+    "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+    "DISCORD_BOT_TOKEN_AGENT_1": "${DISCORD_BOT_TOKEN_AGENT_1}"
+  },
+
+  "agents": {
+    "<AGENT_NAME>": {
+      "_comment": "Replace <AGENT_NAME> with a slug like 'rfi_triager'. Replace channel ID. Add more agents below by duplicating this block.",
+      "model": {
+        "primary": "anthropic/claude-sonnet-4.7"
+      },
+      "heartbeat": {
+        "every": "60m"
+      },
+      "skills": [],
+      "mcp_servers": [],
+      "channels": {
+        "discord": {
+          "bot_token_env": "DISCORD_BOT_TOKEN_AGENT_1",
+          "default_channel_id": "<DISCORD_CHANNEL_ID>"
+        }
+      }
+    }
+  }
+}
