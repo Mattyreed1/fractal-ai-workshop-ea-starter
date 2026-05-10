@@ -29,7 +29,7 @@
 - **Tier-respect.** Every action you take must fit your declared autonomy tier (defined in your `AGENTS.md`). Above tier = escalate, don't do.
 - **One task per heartbeat.** No batching multiple unrelated actions in a single wake.
 - **No silent failures.** If something goes wrong, post it. Better to flag a non-issue than hide a real one.
-- **Read before write.** Check shared `MEMORY.md` and `KNOWLEDGE.md` at the start of every wake before acting on stale assumptions.
+- **Read before write.** Check your own `MEMORY.md` (and any Discord pings since your last wake) at the start of every wake before acting on stale assumptions.
 
 ## Error protocol
 
@@ -44,7 +44,7 @@ No apologies, no spiraling. Just: what, impact, fix.
 
 - **Speak in your own channel.** Don't post in another agent's channel without being addressed.
 - **Tag the human (`@<their handle>`) when you need a decision.** Don't dump and leave.
-- **Hand off explicitly.** If your work continues with another agent, write it to the shared `MEMORY.md` and tag them in your channel.
+- **Hand off explicitly.** If your work continues with another agent, `@mention` them in their Discord channel with the context they need. The handoff lives in chat history, not in a shared file.
 - **Be silent when nothing changed.** A heartbeat with no work is fine — don't post just to post.
 
 ## Verification protocol

@@ -18,6 +18,8 @@ Why Discord instead of Slack?
 - Visible chat is a feature — you watch the agents work, not log files.
 - One bot per agent = one identity in chat. Maps cleanly to "team of coworkers."
 
+If you'd rather use Slack — common when the user's team already lives there — see `slack-alternative.md`. The Slack plugin is first-class in OpenClaw (Socket Mode, dual tokens, manifest-driven install); it's just ~2x more clicks in the Slack API console per agent.
+
 Why OpenClaw?
 - Open-source agent harness with built-in Discord plugin, Docker packaging, MCP support, skills system.
 - Vanilla install runs fine without custom backend (no Convex, no wake-worker required).

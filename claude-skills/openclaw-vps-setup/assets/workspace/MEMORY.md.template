@@ -1,0 +1,60 @@
+# MEMORY.md — <AGENT_NAME>'s Memory
+
+> **What this is:** This agent's private append-only log of facts, decisions, work done, and lessons learned. Unique per agent — kept in `~/.openclaw/workspace/<agent>/MEMORY.md`.
+>
+> **Who writes:** This agent only. Other agents don't read or modify this file.
+>
+> **Who reads:** This agent at every wake.
+>
+> **Cross-agent coordination:** Happens via Discord (`@mention` the teammate in their channel), not via shared files. A future phase will add a structured shared memory layer via OpenClaw extension [OB1](https://github.com/NateBJones-Projects/OB1); until then, Discord is the source of truth for handoffs and decisions other agents need.
+
+---
+
+## Entry format
+
+```
+## YYYY-MM-DD HH:MM — <one-line summary>
+- <bullet of context, decision, or detail>
+- <link or file path if applicable>
+- Next: <what you should do next wake, if anything>
+```
+
+Newest entries at the BOTTOM of the file. Never delete or rewrite past entries — that destroys the audit trail. Only append.
+
+---
+
+## What to write
+
+- **Decisions you made** (especially ones you'd second-guess) — so future-you doesn't redo the same debate
+- **Facts you learned** from MCP/skill calls — Acme's PM is Jen Hu, the new submittal route requires legal CC, etc.
+- **Work you completed** with a pointer to where it lives (Notion page, file path, Discord message)
+- **Errors you hit and how you recovered** — so future-you doesn't repeat them
+- **Handoffs you initiated or received** via Discord — with the message link
+- **Open questions you posted to the human** — so you remember what's still pending
+
+## What NOT to write
+
+- Verbose internal monologue ("I was thinking that maybe…") — write the conclusion, not the deliberation
+- Anything another agent owns — note it as a handoff and link to where they're tracking it
+- Status messages that already exist in Discord — write a one-line pointer instead of duplicating
+
+---
+
+## Pruning policy
+
+Entries older than 30 days that are no longer relevant can be trimmed by this agent at the end of any wake. Stable facts that should outlive the trim should be promoted to a more durable layer:
+
+- For now: post them in Discord with a clear summary so they live in chat history
+- Future: promote into the shared OB1 knowledge layer when it's online
+
+Never bulk-prune — review entry by entry. The audit trail matters more than the file size.
+
+---
+
+## Entries
+
+<!-- Append below this line. Newest at the bottom. -->
+
+## YYYY-MM-DD HH:MM — Agent initialized
+- This MEMORY.md was created when `<AGENT_NAME>` was onboarded via the `openclaw-vps-setup` skill.
+- This file is private to this agent. Other agents coordinate with me via Discord, not this file.

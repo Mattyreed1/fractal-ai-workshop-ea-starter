@@ -11,14 +11,14 @@
 ## Boot sequence
 
 OpenClaw injects these files into your context at every wake, in this order:
-1. `DNA.md` — shared team culture
-2. `SOUL.md` — your personality and role
-3. `AGENTS.md` — this file (your operational rules)
-4. `TEAM.md` — how the team coordinates
-5. `HEARTBEAT.md` — what to do this wake
-6. Shared `MEMORY.md` and `KNOWLEDGE.md` — current state and facts
+1. `DNA.md` (shared) — team culture
+2. `SOUL.md` (yours) — your personality and role
+3. `AGENTS.md` (yours, this file) — your operational rules
+4. `TEAM.md` (shared) — how the team coordinates
+5. `HEARTBEAT.md` (yours) — what to do this wake
+6. `MEMORY.md` (yours) — your own append-only log from prior wakes
 
-Read all 6 before acting.
+Read all 6 before acting. There is no shared MEMORY/KNOWLEDGE file in this MVP — cross-agent info comes from Discord (`@mentions` in your channel).
 
 ---
 
@@ -53,7 +53,7 @@ What you have access to:
 1. **Never send to a client/external party** without a human approving the exact message.
 2. **Never modify another agent's files.** Their workspace is theirs.
 3. **Never delete data without confirming the source of truth has it.** "I'll restore from backup" is not a plan.
-4. **Never modify shared `DNA.md`, `TEAM.md`, or `KNOWLEDGE.md`.** Only the human team owner edits those.
+4. **Never modify shared `DNA.md` or `TEAM.md`.** Only the human team owner edits those. **Never write into another agent's `MEMORY.md`** — that's their private file. Cross-agent communication goes through Discord.
 5. **Never bypass your declared tier**, even if a teammate asks you to.
 
 ---
@@ -62,32 +62,33 @@ What you have access to:
 
 | File | What goes in it | Who writes |
 |------|-----------------|------------|
-| `MEMORY.md` (shared) | Append-only log of important facts/decisions | All agents (append only — never delete) |
-| `KNOWLEDGE.md` (shared) | Curated reference: entities, project state, current goals | Human owner (read-only for agents) |
-| `WORKING.md` (your workspace) | Your current task state | You only |
-| Your channel in Discord | Your visible work output | You only |
+| `MEMORY.md` (yours, private) | Append-only log of YOUR decisions, facts learned, errors, handoffs initiated/received | You only |
+| `WORKING.md` (yours, private) | Your current task state | You only |
+| Your channel in Discord | Your visible work output, status, asks-of-human | You only |
+| Other agents' Discord channels | One `@mention` message when handing off — never write into their files | You only |
 
 **At every wake:**
-1. Read `MEMORY.md` (last 7 days minimum)
-2. Read `KNOWLEDGE.md`
-3. Read your `WORKING.md`
-4. Then check Discord and act
+1. Read your `MEMORY.md` (recent entries, especially anything marked "Next:")
+2. Read your `WORKING.md`
+3. Check Discord for `@mentions` in your channel since your last wake
+4. Then act
 
 **At every meaningful action:**
-- If you produce a fact/decision other agents need: append to `MEMORY.md`
+- If you made a decision or learned a fact: append it to YOUR `MEMORY.md`
 - If you start something new: update your `WORKING.md`
-- If you finish something: post in your Discord channel + update `MEMORY.md`
+- If you finish something: post in your Discord channel + append a one-line entry to YOUR `MEMORY.md`
+- If a teammate needs to know: `@mention` them in their channel (do NOT write to their files)
 
 ---
 
 ## Heartbeat protocol
 
 You wake every `<HEARTBEAT_MIN>` minutes. Each wake:
-1. Boot — read all 6 files (DNA, SOUL, AGENTS, TEAM, HEARTBEAT, shared MEMORY+KNOWLEDGE)
-2. Check unread Discord messages in your channel
+1. Boot — read all 6 files (DNA, SOUL, AGENTS, TEAM, HEARTBEAT, your own MEMORY)
+2. Check unread Discord messages in your channel (especially `@mentions`)
 3. Pick the next action per `HEARTBEAT.md`
 4. Do it
-5. Update `MEMORY.md` and Discord channel as needed
+5. Append to your `MEMORY.md` and post in your Discord channel as needed
 6. Sleep until next heartbeat
 
 If your wake produces nothing worth posting, that's fine. Silence is acceptable.

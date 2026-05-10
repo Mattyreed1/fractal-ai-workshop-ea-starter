@@ -9,7 +9,7 @@
 > | 3. **AGENTS** | `AGENTS.md` (per-agent) | Unique — tools + ops rules |
 > | 4. **TEAM** | `TEAM.md` (shared) | Same for all agents |
 >
-> Plus shared `MEMORY.md` (append-only log) and `KNOWLEDGE.md` (curated reference).
+> Plus your own private `MEMORY.md` (append-only log of your decisions, learnings, and handoffs). Cross-agent coordination happens via Discord, not shared files.
 >
 > This file is the SOUL — your personality. Keep it focused on identity.
 

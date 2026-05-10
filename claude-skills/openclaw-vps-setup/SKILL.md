@@ -4,7 +4,7 @@ description: >-
   Provision a fresh Hetzner VPS from scratch to run an OpenClaw multi-agent
   stack with Discord chat as the visible I/O layer. Walks through SSH key
   setup, Docker install, OpenClaw clone, the 4-Layer Agent Architecture
-  (DNA + SOUL + AGENTS + TEAM), shared memory layer, Discord plugin wiring,
+  (shared DNA + TEAM, per-agent SOUL + AGENTS + MEMORY), Discord plugin wiring,
   and the repeatable 7-step playbook for onboarding additional agents. Use
   when setting up YOUR OWN VPS for AI agents from zero. Triggers on "set up
   my VPS", "deploy openclaw", "provision agent infrastructure", "onboard a
@@ -37,7 +37,7 @@ Spin up a fresh Hetzner VPS, install OpenClaw in Docker, set up the 4-Layer Agen
 |-----------|-------------|
 | Managing an already-deployed OpenClaw instance (logs, restarts, debugging) | `molty` |
 | Translating a Claude Code skill to run on the VPS | `skill-translate` |
-| Setting up Slack instead of Discord | Adapt Phase 5 — see `references/slack-alternative.md` (TODO if needed) |
+| Setting up Slack instead of Discord | Adapt Phase 5 — see `references/slack-alternative.md` |
 
 ## Architecture overview
 
@@ -52,13 +52,12 @@ Your laptop                Hetzner VPS (€5/mo)            Discord
                               ~/.openclaw/
                               ├─ shared/         ◄── ALL agents read these
                               │   ├─ DNA.md          (team culture)
-                              │   ├─ TEAM.md         (coordination rules)
-                              │   ├─ MEMORY.md       (append-only log)
-                              │   └─ KNOWLEDGE.md    (curated reference)
-                              └─ workspace/<agent>/
+                              │   └─ TEAM.md         (coordination rules)
+                              └─ workspace/<agent>/   ◄── private to each agent
                                   ├─ SOUL.md         (personality)
                                   ├─ AGENTS.md       (ops config)
                                   ├─ HEARTBEAT.md    (per-wake routine)
+                                  ├─ MEMORY.md       (this agent's append-only log)
                                   └─ WORKING.md      (current task state)
 ```
 
@@ -75,11 +74,12 @@ Every agent on this team has 4 files loaded into context every wake. Same model 
 | 3. **AGENTS** | `AGENTS.md` | Unique | Tools, tier, hard rules, heartbeat protocol |
 | 4. **TEAM** | `TEAM.md` | **Shared** | Handoff protocol, decision protocol, quality bar |
 
-Plus a **shared memory layer**:
-- **`MEMORY.md`** — append-only log all agents write to and read from
-- **`KNOWLEDGE.md`** — curated reference (read-only for agents, owner-maintained)
+Plus a **per-agent memory file**:
+- **`MEMORY.md`** — each agent's private append-only log. Lives in that agent's workspace, only that agent reads and writes it.
 
-This pattern is the take-home model: same DNA + TEAM across the team, distinct SOUL + AGENTS per role, shared MEMORY + KNOWLEDGE as the orchestration layer. Without these layers, agents are isolated chatbots. With them, they're a coordinated team.
+**Cross-agent coordination happens in Discord, not in shared files.** Agent A finishes a piece of work and `@mentions` Agent B in B's channel; B sees it on next wake. This MVP intentionally has no file-based shared memory layer — that comes later via the OB1 extension (see Extension Points). Until then, the source of truth for cross-agent handoffs is Discord, and each agent's private MEMORY.md is for its own continuity, not the team's.
+
+This pattern is the take-home model: shared DNA + TEAM (the stable team contract), per-agent SOUL + AGENTS + MEMORY (identity, ops, continuity), Discord as the live coordination channel.
 
 ## Pre-flight checklist
 
@@ -193,43 +193,29 @@ DO NOT use `:2026.4.24` — known to hang at startup. See `troubleshooting.md`.
 
 ## Phase 3 — Set up the SHARED layers
 
-Goal: DNA, TEAM, MEMORY, KNOWLEDGE — the files all agents will inherit.
+Goal: DNA and TEAM — the two files all agents will inherit. Per-agent files (SOUL, AGENTS, HEARTBEAT, MEMORY) come in Phase 4.
 
 **Step 3.1 — Copy shared templates from this skill to the VPS.**
 
 ```bash
 # From your laptop (where this skill lives):
 SKILL=~/.claude/skills/openclaw-vps-setup
+ssh openclaw-vps 'mkdir -p ~/.openclaw/shared'
 scp $SKILL/assets/DNA.md openclaw-vps:~/.openclaw/shared/DNA.md
 scp $SKILL/assets/TEAM.md openclaw-vps:~/.openclaw/shared/TEAM.md
-scp $SKILL/assets/shared/MEMORY.md.template openclaw-vps:~/.openclaw/shared/MEMORY.md
-scp $SKILL/assets/shared/KNOWLEDGE.md.template openclaw-vps:~/.openclaw/shared/KNOWLEDGE.md
 ```
 
-**Step 3.2 — Customize `KNOWLEDGE.md` for the user's domain.**
+**Step 3.2 — Lightly customize `TEAM.md`.**
 
-Open the copied file in `nano` or pull it back to the laptop:
-```bash
-ssh openclaw-vps 'cat ~/.openclaw/shared/KNOWLEDGE.md'
-```
-Help the user fill in:
-- **Owner:** their name
-- **Domain:** their business / project context (e.g. "AEC firm in NZ")
-- **Current focus:** what the team is working on
-- **People:** key humans the agents need to know about
-- **Active projects:** anything in flight
+Update the "Team roster" table at the top — leave the rows blank for now (you'll fill them as agents come online). The handoff and decision protocols use Discord `@mentions` as the coordination mechanism and work as-is.
 
-This file gets read by every agent on every wake. Spending 15 min on it now saves the agents from being clueless about context.
-
-**Step 3.3 — Lightly customize `TEAM.md`.**
-
-Update the "Team roster" table at the top — leave the rows blank for now (you'll fill them as agents come online). Other sections (handoff protocol, decision protocol, etc.) work as-is.
-
-**Step 3.4 — Review `DNA.md`.**
+**Step 3.3 — Review `DNA.md`.**
 
 The default DNA is reasonable for most teams. If the user wants to add team-specific values or rules, edit it now. Keep it tight — under 100 lines.
 
-✅ **Phase 3 complete = 4 shared files exist on VPS in `~/.openclaw/shared/`.**
+> **Note:** No shared `MEMORY.md` or `KNOWLEDGE.md` in this MVP. Each agent gets its own private `MEMORY.md` during onboarding (Phase 4). Cross-agent coordination happens via Discord. The OB1 extension (Extension Points) is the planned upgrade path for structured shared memory.
+
+✅ **Phase 3 complete = 2 shared files exist on VPS in `~/.openclaw/shared/`: `DNA.md` + `TEAM.md`.**
 
 ## Phase 4 — Configure the first agent (SOUL + AGENTS)
 
@@ -269,7 +255,14 @@ scp $SKILL/assets/HEARTBEAT.md.template openclaw-vps:~/.openclaw/workspace/$SLUG
 ```
 Edit `<AGENT_NAME>` and `<HEARTBEAT_MIN>` placeholders.
 
-**Step 4.5 — Render `openclaw.json`** from `assets/openclaw.json`. Edit:
+**Step 4.5 — Push the agent's MEMORY.md (private memory file).**
+
+```bash
+scp $SKILL/assets/workspace/MEMORY.md.template openclaw-vps:~/.openclaw/workspace/$SLUG/MEMORY.md
+```
+Edit `<AGENT_NAME>` placeholder. Each agent has its own MEMORY.md — never share one across agents. Cross-agent coordination happens via Discord, not this file.
+
+**Step 4.6 — Render `openclaw.json`** from `assets/openclaw.json`. Edit:
 - Replace `<AGENT_NAME>` with the chosen role slug (e.g. `rfi_triager`)
 - Set the model (default `anthropic/claude-sonnet-4.7`)
 - `heartbeat_minutes` (default 60)
@@ -277,7 +270,7 @@ Edit `<AGENT_NAME>` and `<HEARTBEAT_MIN>` placeholders.
 
 Push: `scp /tmp/openclaw.json openclaw-vps:~/.openclaw/openclaw.json`
 
-✅ **Phase 4 complete = agent #1's SOUL, AGENTS, HEARTBEAT exist on VPS + entry in openclaw.json.**
+✅ **Phase 4 complete = agent #1's SOUL, AGENTS, HEARTBEAT, MEMORY exist on VPS + entry in openclaw.json.**
 
 ## Phase 5 — Wire Discord
 
@@ -354,14 +347,14 @@ Run this for each new agent (~7 min each once muscle memory). Keep `assets/agent
 | Step | Action | Time |
 |------|--------|------|
 | 1 | **Pick role.** Show user a SOUL.md draft from `assets/` (or copy `SOUL.md.template` and fill in) | 60s |
-| 2 | **Edit SOUL.md + AGENTS.md** for the new agent. Push to `~/.openclaw/workspace/<slug>/` | 90s |
+| 2 | **Edit SOUL.md + AGENTS.md + HEARTBEAT.md** for the new agent. Push all three plus a fresh `MEMORY.md` (from `assets/workspace/MEMORY.md.template`) to `~/.openclaw/workspace/<slug>/` | 90s |
 | 3 | **Append agent entry** to `~/.openclaw/openclaw.json` from `assets/agent-entry.json` snippet — replace `<AGENT_NAME>`, `<DISCORD_TOKEN_VAR>`, `<CHANNEL_ID>`, `<HEARTBEAT_MIN>` | 90s |
 | 4 | **Add new env vars** to `~/openclaw/.env` (new bot token + channel) and create the Discord channel + invite the bot | 90s |
 | 5 | **Sync skills:** `ssh openclaw-vps 'bash ~/openclaw/sync_skills.sh'` (or use `scripts/onboard_agent.sh`) | 30s |
 | 6 | **Restart gateway:** `ssh openclaw-vps 'cd ~/openclaw && docker compose restart openclaw-gateway'` (~30s) | 30s |
 | 7 | **Trigger from Discord** — `@mention` the new agent in its channel. Verify response. | 60s |
 
-The new agent inherits the same shared `DNA.md`, `TEAM.md`, `MEMORY.md`, `KNOWLEDGE.md` — no need to recreate those. That's the leverage.
+The new agent inherits the shared `DNA.md` and `TEAM.md` — no need to recreate those. That's the leverage. It also gets its own private `MEMORY.md` in `workspace/<agent>/` (copied from `assets/workspace/MEMORY.md.template`).
 
 For the long-form runbook with annotations, see `references/onboarding-playbook.md`.
 
@@ -375,8 +368,8 @@ For the long-form runbook with annotations, see `references/onboarding-playbook.
 | Stop everything | `ssh openclaw-vps 'cd ~/openclaw && docker compose down'` (does NOT shut down the VPS) |
 | Update OpenClaw image | See `references/runbook.md` § "Image swap procedure" |
 | Sync new/updated skills | `bash ~/openclaw/sync_skills.sh` (run on VPS) |
-| Read shared memory from laptop | `ssh openclaw-vps 'cat ~/.openclaw/shared/MEMORY.md'` |
-| Edit shared knowledge | `ssh openclaw-vps 'nano ~/.openclaw/shared/KNOWLEDGE.md'` |
+| Read an agent's memory | `ssh openclaw-vps 'cat ~/.openclaw/workspace/<agent>/MEMORY.md'` |
+| Edit shared team contract | `ssh openclaw-vps 'nano ~/.openclaw/shared/TEAM.md'` |
 
 ## Anti-Patterns
 
@@ -388,8 +381,8 @@ For the long-form runbook with annotations, see `references/onboarding-playbook.
 | `shutdown now` on the VPS | Kills the whole server | `docker compose down` for containers only |
 | Reusing the same Discord bot token across agents | Each agent should have its own identity for visibility | One bot per agent, one channel per agent |
 | Adding agents without restarting gateway | Config not reloaded; new agent silent | Always `docker compose restart` after `openclaw.json` edits |
-| Letting agents modify `DNA.md` / `TEAM.md` / `KNOWLEDGE.md` | These are the human's stable contracts; agent edits cause drift | Only the team owner edits these. Agents append to `MEMORY.md` only. |
-| Skipping `KNOWLEDGE.md` setup | Agents will hallucinate context they don't have | Spend 15 min populating it during Phase 3 |
+| Letting agents modify shared `DNA.md` or `TEAM.md` | These are the human's stable team contracts; agent edits cause drift across the whole team | Only the team owner edits these. Each agent appends to its OWN private `MEMORY.md` for its own continuity. |
+| Adding a shared `MEMORY.md` or `KNOWLEDGE.md` | Becomes a noisy junk drawer that drowns each agent in irrelevant context | Cross-agent coordination uses Discord `@mentions`. For structured shared memory, wait for the OB1 extension (see Extension Points). |
 | Per-agent SOUL.md without DNA.md inherited | Agents become inconsistent — each one feels different | Always set up shared layers (Phase 3) BEFORE per-agent (Phase 4) |
 
 ## Verification
@@ -399,8 +392,8 @@ After Phase 6 + each onboarding loop:
 - [ ] `ssh openclaw-vps 'echo ok'` returns `ok`
 - [ ] `docker ps` shows `openclaw-openclaw-gateway-1` as `Up` and `(healthy)`
 - [ ] `~/openclaw/.env` has `chmod 600`
-- [ ] `~/.openclaw/shared/` contains `DNA.md`, `TEAM.md`, `MEMORY.md`, `KNOWLEDGE.md`
-- [ ] `~/.openclaw/workspace/<agent>/` contains `SOUL.md`, `AGENTS.md`, `HEARTBEAT.md` for each agent
+- [ ] `~/.openclaw/shared/` contains `DNA.md` and `TEAM.md` (only)
+- [ ] `~/.openclaw/workspace/<agent>/` contains `SOUL.md`, `AGENTS.md`, `HEARTBEAT.md`, `MEMORY.md` for each agent
 - [ ] Each agent's Discord channel shows at least one bot message
 - [ ] Triggering an agent in its channel produces a reply within 60s
 
@@ -419,8 +412,7 @@ After Phase 6 + each onboarding loop:
 | `assets/SOUL-submittal-reviewer.md` | AEC starter — submittal review agent SOUL |
 | `assets/SOUL-comms-drafter.md` | AEC starter — client comms drafter SOUL |
 | `assets/HEARTBEAT.md.template` | Per-agent wake routine (~50 lines) |
-| `assets/shared/MEMORY.md.template` | Append-only team log (Layer 5 — shared memory) |
-| `assets/shared/KNOWLEDGE.md.template` | Curated reference (Layer 6 — owner-maintained) |
+| `assets/workspace/MEMORY.md.template` | Per-agent append-only memory log (private to each agent) |
 | `scripts/sync_skills.sh` | Distributes canonical skills to workspace |
 | `scripts/onboard_agent.sh` | Helper that runs steps 5-6 of the onboarding playbook |
 | `references/runbook.md` | Long-form playbook for non-CC users |
@@ -437,8 +429,8 @@ After Phase 6 + each onboarding loop:
 
 ## Extension Points
 
-1. **Slack instead of Discord** — adapt Phase 5 with Slack app manifest. Add `references/slack-alternative.md` when needed.
-2. **Convex blackboard** — graduate from `MEMORY.md`-as-file to a Convex-backed task queue with structured handoffs and notifications. Out of scope for MVP.
+1. **Slack instead of Discord** — full Phase 5 replacement in `references/slack-alternative.md`. Uses OpenClaw's `extensions/slack` plugin via Socket Mode (bot token `xoxb-…` + app-level token `xapp-…`).
+2. **OB1 shared memory layer** — install the [OB1 OpenClaw extension](https://github.com/NateBJones-Projects/OB1) for a structured, queryable shared memory across agents. Replaces ad-hoc Discord-only coordination with first-class team memory, knowledge, and handoff primitives. This is the canonical upgrade path from the MVP's per-agent `MEMORY.md` + Discord setup; install once OB1's first stable release is out.
 3. **Wake worker (systemd)** — immediate notification-driven wakes (vs polling on heartbeat). Advanced; not needed under ~5 agents.
 4. **Per-agent MCP servers** — wire Notion, n8n, Calendar, etc. to specific agents. Add to `mcporter.json` and reference in agent's `mcp_servers` array.
 5. **Mem0 / Letta integration** — graduate from file-based shared memory to a dedicated memory service when scale demands it.
