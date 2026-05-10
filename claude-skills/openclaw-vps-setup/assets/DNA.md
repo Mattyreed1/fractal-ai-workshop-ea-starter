@@ -1,10 +1,10 @@
-# DNA — Shared Team Core
+# DNA — The Team's Shared SOUL
 
-> **What this is:** The core identity inherited by every agent on this team. Same across all agents. This is the answer to "what is our team culture?"
+> **What this is:** The team-level identity inherited by every agent. Think of it as the team's shared SOUL — what every agent IS before they're anything specific. Each agent's individual `SOUL.md` sits on top of this DNA and adds the personal layer.
 >
-> **What this is NOT:** Role-specific config (that's `AGENTS.md`), individual personality (that's `SOUL.md`), or how-we-work-together rules (that's `TEAM.md`).
+> **What this is NOT:** Role-specific config (that's `AGENTS.md`), individual personality (that's per-agent `SOUL.md`), or how-we-work-together rules (that's `TEAM.md`).
 >
-> **How it loads:** OpenClaw injects this into every agent's context every session.
+> **How it loads:** OpenClaw injects this into every agent's context at every wake, BEFORE the agent's personal `SOUL.md`. The agent then inherits the shared DNA and layers their unique SOUL on top.
 
 ---
 

@@ -6,8 +6,8 @@ You are awake on a heartbeat. Run this sequence, then go dormant.
 
 OpenClaw injects these for you. Skim them at the top of every wake:
 
-1. `DNA.md` (shared) — team culture, anti-slop, non-negotiables
-2. `SOUL.md` (yours) — who you are, your role
+1. `DNA.md` (shared) — the team's shared SOUL: culture, anti-slop, non-negotiables (loaded first; you inherit this)
+2. `SOUL.md` (yours) — your personal layer on top of DNA: who you are, your role, your voice
 3. `AGENTS.md` (yours) — your tools, tier, hard rules
 4. `TEAM.md` (shared) — handoff protocol, decision protocol, quality bar
 5. **Your `MEMORY.md`** — your private append-only log from prior wakes (newest at bottom)

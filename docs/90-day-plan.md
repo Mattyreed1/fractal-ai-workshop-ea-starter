@@ -23,11 +23,11 @@ Three phases. Each builds on the last. Don't skip ahead.
 - [ ] Walk through Phases 1-2 with CC (provision + Docker install)
 - [ ] Stop after Phase 2 — confirm `ssh openclaw-vps 'docker --version'` works
 
-### Day 3 (~45 min)
+### Day 3 (~30 min)
 
 - [ ] Resume with CC: *"continue setting up the OpenClaw stack"*
-- [ ] Phase 3 with CC (shared layers — DNA, TEAM, MEMORY, KNOWLEDGE)
-- [ ] **Spend 15 min populating `KNOWLEDGE.md` for your domain** (your name, business, current focus, key people, active projects). This pays back 10x.
+- [ ] Phase 3 with CC — set up the shared layer: `DNA.md` (the team's shared SOUL — what every agent on this team IS) + `TEAM.md` (how the team coordinates and hands off in Discord)
+- [ ] Lightly customize `DNA.md` if your team has unique values or rules. Default is reasonable — keep it under 100 lines.
 
 ### Day 4-5 (~90 min)
 
@@ -47,7 +47,7 @@ Three phases. Each builds on the last. Don't skip ahead.
 
 ## Month 1 — Expansion
 
-**Goal:** 2-3 agents onboarded. Shared memory layer in regular use. Weekly rhythm.
+**Goal:** 2-3 agents onboarded. Each with its own private `MEMORY.md`. Discord-based coordination flowing. Weekly rhythm.
 
 ### Pattern: one bottleneck per week
 
@@ -63,12 +63,15 @@ Each week:
 - **Monday morning** (15 min): What's broken? What needs adjusting?
 - **Friday afternoon** (15 min): What worked this week? What gets pruned?
 
-### KNOWLEDGE.md hygiene
+### Per-agent MEMORY.md hygiene
 
 End of each week, take 10 min to:
-- Move stable facts from MEMORY.md into KNOWLEDGE.md
-- Delete obsolete entries
-- Keep KNOWLEDGE.md under ~3,000 words (re-read once a month for compounding clarity)
+- For each agent, skim its `~/.openclaw/workspace/<agent>/MEMORY.md` — what did it learn, decide, hand off?
+- Trim obsolete entries (anything resolved or superseded)
+- Spot patterns worth promoting — if a fact has come up 3+ times across agents, post it in Discord as a pinned message so the team sees it consistently
+- Keep each agent's `MEMORY.md` under ~2,000 lines (the audit trail matters, but stale noise drowns recent signal)
+
+**When the [OB1 extension](https://github.com/NateBJones-Projects/OB1) is online**, this ritual graduates: stable cross-agent knowledge moves into OB1's structured shared-memory layer instead of being pinned in Discord. Until then, Discord is the cross-agent source of truth.
 
 **Month 1 success metric:** 3 agents online, each handling at least one weekly recurring task. Daily and weekly cadence is muscle memory.
 
@@ -82,7 +85,7 @@ End of each week, take 10 min to:
 
 - Add agents for the highest-leverage workflows in your target domain
 - Sweet spot: 3-5 agents. Below 5 = blind spots. Above 5 = silos.
-- Each agent: clear role (SOUL.md), defined tier (AGENTS.md), inherited culture (DNA.md)
+- Each agent: clear role (its own `SOUL.md`), defined tier (its own `AGENTS.md`), inherited team identity (shared `DNA.md` — the team's shared SOUL)
 
 ### Operate the COO Cadence
 
@@ -105,7 +108,7 @@ Notion table is fine. Look daily for the first 2 weeks, then weekly.
 By end of Quarter 1, you have:
 
 - A working multi-agent team running on a VPS that costs <€10/mo to operate
-- A Notion `KNOWLEDGE.md` that captures your domain's institutional knowledge
+- Per-agent `MEMORY.md` files capturing each agent's continuity (graduating to OB1 shared memory when ready)
 - A weekly cadence you can sustain solo or scale to a team
 - Your own COO Playbook adapted from the one you got in the workshop
 
@@ -122,7 +125,7 @@ That's the conversation.
 By end of Quarter 1, you should be able to leave for a full week and come back to:
 - Your agent team has continued the recurring workflows
 - Nothing irreversible happened that you wouldn't have approved
-- The shared MEMORY.md and Discord channels show you exactly what was done
+- Each agent's `MEMORY.md` plus the Discord channels show you exactly what was done
 
 If yes: you built a system.
 

@@ -11,9 +11,9 @@
 ## Boot sequence
 
 OpenClaw injects these files into your context at every wake, in this order:
-1. `DNA.md` (shared) — team culture
-2. `SOUL.md` (yours) — your personality and role
-3. `AGENTS.md` (yours, this file) — your operational rules
+1. `DNA.md` (shared) — the team's shared SOUL: what every agent on this team IS
+2. `SOUL.md` (yours) — your personal layer on top of DNA: what makes YOU distinct
+3. `AGENTS.md` (yours, this file) — your operational rules, tools, tier
 4. `TEAM.md` (shared) — how the team coordinates
 5. `HEARTBEAT.md` (yours) — what to do this wake
 6. `MEMORY.md` (yours) — your own append-only log from prior wakes

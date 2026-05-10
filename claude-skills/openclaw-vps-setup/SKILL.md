@@ -19,7 +19,7 @@ metadata:
 
 # OpenClaw VPS Setup
 
-Spin up a fresh Hetzner VPS, install OpenClaw in Docker, set up the 4-Layer Agent Architecture (shared DNA + TEAM + memory, plus per-agent SOUL + AGENTS files), deploy the first Molty agent into a dedicated Discord channel, then onboard 2-3 more using the same playbook each time. Designed for operators who have Claude Code installed but no ops experience.
+Spin up a fresh Hetzner VPS, install OpenClaw in Docker, set up the 4-Layer Agent Architecture (DNA as the team's shared SOUL + TEAM as the shared coordination rulebook, plus per-agent SOUL + AGENTS + HEARTBEAT + MEMORY files for each individual agent), deploy the first Molty agent into a dedicated Discord channel, then onboard 2-3 more using the same playbook each time. Designed for operators who have Claude Code installed but no ops experience.
 
 ## Triggers
 
@@ -67,10 +67,12 @@ This MVP omits Convex blackboard, custom wake-worker, and other advanced pattern
 
 Every agent on this team has 4 files loaded into context every wake. Same model whether you have 1 agent or 10.
 
+The key insight: **DNA is the team's shared SOUL.** It's the identity layer all agents inherit before they're anything specific. Each agent's individual SOUL.md sits on top of that shared DNA and adds the personal layer — voice, role, what makes THIS agent distinct.
+
 | Layer | File | Per-agent? | Purpose |
 |-------|------|------------|---------|
-| 1. **DNA** | `DNA.md` | **Shared** | Team culture: integrity, anti-slop, non-negotiables |
-| 2. **SOUL** | `SOUL.md` | Unique | Personality, voice, role-specific identity |
+| 1. **DNA** | `DNA.md` | **Shared** | The team's shared SOUL — identity all agents inherit (culture, anti-slop, non-negotiables) |
+| 2. **SOUL** | `SOUL.md` | Unique | This agent's personal layer on top of the shared DNA — voice, role, personality |
 | 3. **AGENTS** | `AGENTS.md` | Unique | Tools, tier, hard rules, heartbeat protocol |
 | 4. **TEAM** | `TEAM.md` | **Shared** | Handoff protocol, decision protocol, quality bar |
 
@@ -79,7 +81,12 @@ Plus a **per-agent memory file**:
 
 **Cross-agent coordination happens in Discord, not in shared files.** Agent A finishes a piece of work and `@mentions` Agent B in B's channel; B sees it on next wake. This MVP intentionally has no file-based shared memory layer — that comes later via the OB1 extension (see Extension Points). Until then, the source of truth for cross-agent handoffs is Discord, and each agent's private MEMORY.md is for its own continuity, not the team's.
 
-This pattern is the take-home model: shared DNA + TEAM (the stable team contract), per-agent SOUL + AGENTS + MEMORY (identity, ops, continuity), Discord as the live coordination channel.
+This pattern is the take-home model:
+- **Shared identity stack**: DNA (team SOUL) + TEAM (coordination contract) — same for every agent.
+- **Per-agent stack on top**: SOUL (your personal layer over DNA) + AGENTS (ops) + HEARTBEAT (wake routine) + MEMORY (private continuity log).
+- **Live coordination**: Discord channels — one per agent, `@mentions` for handoffs.
+
+Without this layering, agents are isolated chatbots that feel different from each other and forget the team they belong to. With it, they're a coordinated team — every agent recognizably part of the same team (DNA), but with its own face (SOUL).
 
 ## Pre-flight checklist
 

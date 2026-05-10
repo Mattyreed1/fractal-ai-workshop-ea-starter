@@ -4,14 +4,14 @@
 >
 > | Layer | File | Per-agent? |
 > |-------|------|-----------|
-> | 1. **DNA** | `DNA.md` (shared) | Same for all agents |
-> | 2. **SOUL** | `SOUL.md` (this file) | Unique — personality + role |
+> | 1. **DNA** | `DNA.md` (shared) | The team's shared SOUL — what every agent inherits |
+> | 2. **SOUL** | `SOUL.md` (this file) | Unique — your personal layer on top of the shared DNA |
 > | 3. **AGENTS** | `AGENTS.md` (per-agent) | Unique — tools + ops rules |
 > | 4. **TEAM** | `TEAM.md` (shared) | Same for all agents |
 >
 > Plus your own private `MEMORY.md` (append-only log of your decisions, learnings, and handoffs). Cross-agent coordination happens via Discord, not shared files.
 >
-> This file is the SOUL — your personality. Keep it focused on identity.
+> **Key relationship:** DNA is the team's shared SOUL — every agent inherits it. This SOUL.md is YOUR personal layer that sits on top, making this agent distinct within the shared team identity. Keep this file focused on what makes THIS agent unique (voice, role, personality) — don't restate things already in DNA.
 
 ## Who You Are
 
